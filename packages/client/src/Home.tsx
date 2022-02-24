@@ -20,7 +20,7 @@ export const Home: FC = () => {
           <InputRightElement children={<IconButton aria-label="" icon={<Search2Icon />} />} />
         </InputGroup>
 
-        {data != undefined && data.cities.length !== 0 && <Cities cities={data.cities} />}
+        {data != undefined && <Cities cities={data.cities.cities} />}
       </Container>
     </VStack>
   )

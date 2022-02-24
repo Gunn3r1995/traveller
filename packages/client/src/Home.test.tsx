@@ -6,15 +6,6 @@ import { CITIES } from './queries'
 import { GraphQLError } from 'graphql'
 
 describe('<Home /> component', () => {
-  it('when no cities, the <Cities /> component is not rendered', async () => {
-    render(
-      <MockedProvider mocks={[]} addTypename={false}>
-        <Home />
-      </MockedProvider>
-    )
-    expect(screen.queryByTestId('cities')).toBeNull()
-  })
-
   it('when still loading it displays the loading text', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
@@ -54,7 +45,7 @@ describe('<Home /> component', () => {
         query: CITIES,
       },
       result: {
-        data: { cities: { id: 1, name: 'London', country: 'United Kingdom' } },
+        data: { cities: { cities: { id: 1, name: 'London', country: 'United Kingdom' } } },
       },
     }
 

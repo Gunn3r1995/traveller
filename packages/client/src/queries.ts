@@ -1,8 +1,14 @@
 import { gql } from "@apollo/client";
-import { City } from "../../api/src/cities/types";
+
+export interface CityResponse {
+  name: string,
+  country: string
+}
 
 export interface CitiesData {
-    cities: City[];
+    cities: {
+      cities: CityResponse[];
+    }
 }
 
 export interface CitiesVars {
