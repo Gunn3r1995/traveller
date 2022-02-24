@@ -7,17 +7,8 @@ import { CITIES } from './queries'
 
 describe('<App /> component', () => {
   it('renders the Header content', async () => {
-    const citiesMock = {
-      request: {
-        query: CITIES,
-      },
-      result: {
-        data: { cities: [] },
-      },
-    }
-
     render(
-      <MockedProvider mocks={[citiesMock]} addTypename={false}>
+      <MockedProvider mocks={[]} addTypename={false}>
         <BrowserRouter>
           <App />
         </BrowserRouter>
