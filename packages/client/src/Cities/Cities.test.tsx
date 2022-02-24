@@ -3,9 +3,9 @@ import { Cities } from './Cities'
 
 describe('<Home /> component', () => {
   it('when no cities, No cities found text is rendered', async () => {
-    render(<Cities cities={[]} />)
+    render(<Cities cities={[]} filter="Utopia" />)
 
-    const noCitiesFound = screen.getByText('No cities have been found')
+    const noCitiesFound = screen.getByText("No cities have been found matching filter 'Utopia'")
     expect(noCitiesFound).toBeInTheDocument()
   })
 
@@ -14,14 +14,17 @@ describe('<Home /> component', () => {
       <Cities
         cities={[
           {
+            id: 1,
             name: 'London',
             country: 'United Kingdom',
           },
           {
+            id: 2,
             name: 'Moscow',
             country: 'Russia',
           },
         ]}
+        filter={'o'}
       />
     )
 
