@@ -6,19 +6,6 @@ import { CITIES } from './queries'
 import { GraphQLError } from 'graphql'
 
 describe('<Home /> component', () => {
-  it('renders the Smart traveller header', async () => {
-    render(
-      <MockedProvider mocks={[]} addTypename={false}>
-        <Home />
-      </MockedProvider>
-    )
-
-    await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
-
-    const HeadingComponent = screen.getByText(/^Smart traveller$/i)
-    expect(HeadingComponent).toBeInTheDocument()
-  })
-
   it('when no cities, the <Cities /> component is not rendered', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
