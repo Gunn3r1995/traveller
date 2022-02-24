@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react'
 import type { FC } from 'react'
 import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, VStack } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
-import type { City } from '../../api/src/cities/types'
 import { Cities } from './Cities/Cities'
+import { CITIES, CitiesData, CitiesVars } from './queries'
+import { useQuery } from '@apollo/client'
 
 export const Home: FC = () => {
-  const [cities, setCities] = useState<City[]>([])
+  const { loading, error, data } = useQuery<CitiesData, CitiesVars>(CITIES)
 
-  useEffect(() => {
-    // TODO: Create to API Call
-  }, [])
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error!</p>
 
   return (
     <VStack spacing="8">
@@ -19,8 +18,9 @@ export const Home: FC = () => {
         <InputGroup>
           <Input />
           <InputRightElement children={<IconButton aria-label="" icon={<Search2Icon />} />} />
-          {cities.length !== 0 && <Cities cities={cities} />}
         </InputGroup>
+
+        {data != undefined && data.cities.length !== 0 && <Cities cities={data.cities} />}
       </Container>
     </VStack>
   )
