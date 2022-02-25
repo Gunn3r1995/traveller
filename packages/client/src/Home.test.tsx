@@ -1,10 +1,7 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
-import { render } from './test-utils'
+import { GetCitiesRequestSeeder, render } from './test-utils'
 import { Home } from './Home'
-import { CITIES } from './queries'
-import { GraphQLError } from 'graphql'
-import { Button } from '@chakra-ui/react'
 
 describe('<Home /> component', () => {
   it('renders the search box input', async () => {
@@ -60,14 +57,7 @@ describe('<Home /> component', () => {
   })
 
   it('when search fails it renders the error text', async () => {
-    const citiesMock = {
-      request: {
-        query: CITIES,
-      },
-      result: {
-        errors: [new GraphQLError('Error!')],
-      },
-    }
+    var citiesMock = new GetCitiesRequestSeeder().RespondsWithError()
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>
@@ -91,26 +81,7 @@ describe('<Home /> component', () => {
   })
 
   it('when search returns data it renders the <Cities /> component', async () => {
-    const citiesMock = {
-      request: {
-        query: CITIES,
-        variables: {
-          filter: {
-            name: undefined,
-          },
-        },
-      },
-      result: {
-        data: {
-          cities: {
-            cities: [
-              { id: 1, name: 'London', country: 'United Kingdom' },
-              { id: 1, name: 'Moscow', country: 'Russia' },
-            ],
-          },
-        },
-      },
-    }
+    const citiesMock = new GetCitiesRequestSeeder().RespondsWithCities()
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>
@@ -133,19 +104,15 @@ describe('<Home /> component', () => {
   })
 
   it('when search returns data with filter it renders the <Cities /> component', async () => {
-    const citiesMock = {
-      request: {
-        query: CITIES,
-        variables: {
-          filter: {
-            name: 'London',
-          },
-        },
+    const citiesMock = new GetCitiesRequestSeeder().RespondsWithCities('London', [
+      {
+        id: 1,
+        name: 'London',
+        country: 'United Kingdom',
+        visited: false,
+        wishlist: false,
       },
-      result: {
-        data: { cities: { cities: [{ id: 1, name: 'London', country: 'United Kingdom' }] } },
-      },
-    }
+    ])
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>
@@ -171,19 +138,7 @@ describe('<Home /> component', () => {
   })
 
   it('when search returns empty result due to filter not matching it renders the <Cities /> component', async () => {
-    const citiesMock = {
-      request: {
-        query: CITIES,
-        variables: {
-          filter: {
-            name: 'Utopia',
-          },
-        },
-      },
-      result: {
-        data: { cities: { cities: [] } },
-      },
-    }
+    const citiesMock = new GetCitiesRequestSeeder().RespondsWithCities('Utopia', [])
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>

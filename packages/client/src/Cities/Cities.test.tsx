@@ -1,6 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { UPDATE_CITY } from '../queries'
+import { UpdateCityRequestSeeder } from '../test-utils'
 import { Cities } from './Cities'
 
 describe('<Home /> component', () => {
@@ -124,26 +124,7 @@ describe('<Home /> component', () => {
   })
 
   it('when visited menu item has been clicked, calls mutation', async () => {
-    const citiesMock = {
-      request: {
-        query: UPDATE_CITY,
-        variables: {
-          input: {
-            id: 1,
-            visited: true,
-          },
-        },
-      },
-      result: {
-        data: {
-          id: 1,
-          name: 'London',
-          country: 'United Kingdom',
-          visited: true,
-          wishlist: false,
-        },
-      },
-    }
+    const citiesMock = new UpdateCityRequestSeeder().UpdateVisited(true)
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>
@@ -175,26 +156,7 @@ describe('<Home /> component', () => {
   })
 
   it('when wishlist menu item has been clicked, calls mutation', async () => {
-    const citiesMock = {
-      request: {
-        query: UPDATE_CITY,
-        variables: {
-          input: {
-            id: 1,
-            wishlist: true,
-          },
-        },
-      },
-      result: {
-        data: {
-          id: 1,
-          name: 'London',
-          country: 'United Kingdom',
-          visited: false,
-          wishlist: true,
-        },
-      },
-    }
+    const citiesMock = new UpdateCityRequestSeeder().UpdateWishlist(true)
 
     render(
       <MockedProvider mocks={[citiesMock]} addTypename={false}>

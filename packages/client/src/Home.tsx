@@ -3,7 +3,7 @@ import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, V
 import { Search2Icon } from '@chakra-ui/icons'
 import { Cities } from './Cities/Cities'
 import { CITIES, CitiesData, CitiesVars } from './queries'
-import { useLazyQuery, useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 
 export const Home: FC = () => {
   const [getCities, { loading, error, data }] = useLazyQuery<CitiesData, CitiesVars>(CITIES)
@@ -19,7 +19,6 @@ export const Home: FC = () => {
       },
     })
 
-  // TODO: Fix when loading all items it removes the search box
   if (loading) {
     return <p>Loading...</p>
   }
