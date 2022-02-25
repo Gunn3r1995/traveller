@@ -19,6 +19,7 @@ export const Home: FC = () => {
       },
     })
 
+  // TODO: Fix when loading all items it removes the search box
   if (loading) {
     return <p>Loading...</p>
   }
