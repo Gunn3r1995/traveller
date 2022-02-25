@@ -62,6 +62,48 @@ export class GetCitiesRequestSeeder implements MockedResponse<Record<string, any
 
     return this
   }
+
+  public RespondsWithVisitedCities(visited?: boolean, cities?: CityResponse[]): GetCitiesRequestSeeder {
+    this.request = {
+      ...this.request,
+      variables: {
+        filter: {
+          visited: visited,
+        },
+      },
+    }
+
+    this.result = {
+      data: {
+        cities: {
+          cities: cities == undefined ? this.cities : cities,
+        },
+      },
+    }
+
+    return this
+  }
+
+  public RespondsWithWishlistCities(wishlist?: boolean, cities?: CityResponse[]): GetCitiesRequestSeeder {
+    this.request = {
+      ...this.request,
+      variables: {
+        filter: {
+          wishlist: wishlist,
+        },
+      },
+    }
+
+    this.result = {
+      data: {
+        cities: {
+          cities: cities == undefined ? this.cities : cities,
+        },
+      },
+    }
+
+    return this
+  }
 }
 
 export class UpdateCityRequestSeeder implements MockedResponse<Record<string, any>> {

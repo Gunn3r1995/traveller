@@ -5,6 +5,8 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Skeleton,
+  Stack,
   Table,
   TableCaption,
   Tbody,
@@ -17,8 +19,9 @@ import { FC } from 'react'
 import { CitiesMutationInput, CityResponse, UPDATE_CITY } from '../queries'
 
 export interface Props {
-  filter: string | undefined
-  cities: ReadonlyArray<CityResponse>
+  filter?: string
+  cities: ReadonlyArray<CityResponse> | undefined
+  isLoading: boolean
 }
 
 export const Cities: FC<Props> = (props: Props) => {
@@ -34,6 +37,7 @@ export const Cities: FC<Props> = (props: Props) => {
       },
     })
   }
+
   const handleWishlistClicked = (id: number, wishlist: boolean) => {
     updateCity({
       variables: {
@@ -45,10 +49,26 @@ export const Cities: FC<Props> = (props: Props) => {
     })
   }
 
+  if (props.isLoading) {
+    return (
+      <Stack mt="5px" data-testid="cities-loading">
+        <Skeleton height="20px" />
+        <Skeleton height="20px" />
+        <Skeleton height="20px" />
+      </Stack>
+    )
+  }
+
+  if (props.cities == undefined) {
+    return <></> // Nothing to show, this is the initial state
+  }
+
   return (
     <Table data-testid="cities" variant="simple">
       {props.cities.length === 0 && (
-        <TableCaption>No cities have been found matching filter '{props.filter}'</TableCaption>
+        <TableCaption>
+          No cities have been found {props.filter == undefined ? '' : `matching filter '${props.filter}'`}
+        </TableCaption>
       )}
       <Thead>
         <Tr>

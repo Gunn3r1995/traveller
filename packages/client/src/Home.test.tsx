@@ -36,26 +36,6 @@ describe('<Home /> component', () => {
     expect(screen.queryByTestId('cities')).not.toBeInTheDocument()
   })
 
-  it('when loading after search button clicked it renders the loading text', async () => {
-    render(
-      <MockedProvider mocks={[]} addTypename={false}>
-        <Home />
-      </MockedProvider>
-    )
-
-    const searchButton = screen.getByRole('button')
-    fireEvent(
-      searchButton,
-      new MouseEvent('click', {
-        bubbles: true,
-        cancelable: true,
-      })
-    )
-
-    const error = screen.getByText('Loading...')
-    expect(error).toBeInTheDocument()
-  })
-
   it('when search fails it renders the error text', async () => {
     var citiesMock = new GetCitiesRequestSeeder().RespondsWithError()
 
@@ -78,6 +58,25 @@ describe('<Home /> component', () => {
 
     const error = screen.getByText('Error!')
     expect(error).toBeInTheDocument()
+  })
+
+  it('while loading after search button clicked it renders <Cities /> component in loading state', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Home />
+      </MockedProvider>
+    )
+
+    const searchButton = screen.getByRole('button')
+    fireEvent(
+      searchButton,
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    )
+
+    expect(screen.getByTestId('cities-loading')).toBeInTheDocument()
   })
 
   it('when search returns data it renders the <Cities /> component', async () => {

@@ -4,14 +4,25 @@ import { UpdateCityRequestSeeder } from '../test-utils'
 import { Cities } from './Cities'
 
 describe('<Home /> component', () => {
-  it('when no cities, No cities found text is rendered', async () => {
+  it('when no cities with filter, No cities found text with filter is rendered', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <Cities cities={[]} filter="Utopia" />
+        <Cities cities={[]} filter="Utopia" isLoading={false} />
       </MockedProvider>
     )
 
     const noCitiesFound = screen.getByText("No cities have been found matching filter 'Utopia'")
+    expect(noCitiesFound).toBeInTheDocument()
+  })
+
+  it('when no cities and no filer, No cities found text is rendered', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities cities={[]} isLoading={false} />
+      </MockedProvider>
+    )
+
+    const noCitiesFound = screen.getByText('No cities have been found')
     expect(noCitiesFound).toBeInTheDocument()
   })
 
@@ -36,6 +47,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'o'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -65,6 +77,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -87,6 +100,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -112,6 +126,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -139,6 +154,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -171,6 +187,7 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
+          isLoading={false}
         />
       </MockedProvider>
     )
@@ -185,5 +202,15 @@ describe('<Home /> component', () => {
     )
 
     await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
+  })
+
+  it('when isLoading renders skeleton', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities cities={[]} isLoading={true} />
+      </MockedProvider>
+    )
+
+    expect(screen.getByTestId('cities-loading')).toBeInTheDocument()
   })
 })
