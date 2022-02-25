@@ -2,6 +2,8 @@ import { gql } from "@apollo/client";
 
 export interface CitiesFilters {
   name?: string
+  visited?: boolean
+  wishlist?: boolean
 }
 
 export interface CitiesMutationInput {
