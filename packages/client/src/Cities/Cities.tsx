@@ -21,11 +21,14 @@ import { CitiesMutationInput, CityResponse, UPDATE_CITY } from '../queries'
 export interface Props {
   filter?: string
   cities: ReadonlyArray<CityResponse> | undefined
-  isLoading: boolean
+  isLoading?: boolean
+  isReadonly?: boolean
 }
 
 export const Cities: FC<Props> = (props: Props) => {
   const [updateCity] = useMutation<CityResponse, CitiesMutationInput>(UPDATE_CITY)
+  const isLoading = props.isLoading == undefined ? false : props.isLoading
+  const isReadonly = props.isReadonly == undefined ? false : props.isReadonly
 
   const handleVisitedClicked = (id: number, visited: boolean) => {
     updateCity({
@@ -49,7 +52,7 @@ export const Cities: FC<Props> = (props: Props) => {
     })
   }
 
-  if (props.isLoading) {
+  if (isLoading) {
     return (
       <Stack mt="5px" data-testid="cities-loading">
         <Skeleton height="20px" />
@@ -74,7 +77,7 @@ export const Cities: FC<Props> = (props: Props) => {
         <Tr>
           <Th>Name</Th>
           <Th>Country</Th>
-          <Th></Th>
+          {!isReadonly && <Th></Th>}
         </Tr>
       </Thead>
       <Tbody>
@@ -82,28 +85,30 @@ export const Cities: FC<Props> = (props: Props) => {
           <Tr key={city.id}>
             <Td>{city.name}</Td>
             <Td>{city.country}</Td>
-            <Td>
-              <Menu>
-                <MenuButton as={Button}>...</MenuButton>
-                <MenuList>
-                  <MenuItem
-                    data-testid="visited-button"
-                    onClick={() => {
-                      handleVisitedClicked(city.id, !city.visited)
-                    }}
-                  >
-                    {city.visited ? 'Set not visited' : 'Set visited'}
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                      handleWishlistClicked(city.id, !city.wishlist)
-                    }}
-                  >
-                    {city.wishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Td>
+            {!isReadonly && (
+              <Td>
+                <Menu>
+                  <MenuButton as={Button}>...</MenuButton>
+                  <MenuList>
+                    <MenuItem
+                      data-testid="visited-button"
+                      onClick={() => {
+                        handleVisitedClicked(city.id, !city.visited)
+                      }}
+                    >
+                      {city.visited ? 'Set not visited' : 'Set visited'}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        handleWishlistClicked(city.id, !city.wishlist)
+                      }}
+                    >
+                      {city.wishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </Td>
+            )}
           </Tr>
         ))}
       </Tbody>

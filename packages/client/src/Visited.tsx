@@ -19,7 +19,7 @@ export const Visited: FC = () => {
       <Heading as="h1">Visited</Heading>
       <Container centerContent maxW="container.md" flexDir="row">
         {error && <p>Error getting your visited cities</p>}
-        {!error && <Cities cities={data?.cities?.cities} isLoading={loading} />}
+        {!error && <Cities cities={data?.cities?.cities} isLoading={loading} isReadonly={true} />}
       </Container>
     </>
   )

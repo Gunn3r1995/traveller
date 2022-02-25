@@ -7,7 +7,7 @@ describe('<Home /> component', () => {
   it('when no cities with filter, No cities found text with filter is rendered', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <Cities cities={[]} filter="Utopia" isLoading={false} />
+        <Cities cities={[]} filter="Utopia" />
       </MockedProvider>
     )
 
@@ -18,7 +18,7 @@ describe('<Home /> component', () => {
   it('when no cities and no filer, No cities found text is rendered', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
-        <Cities cities={[]} isLoading={false} />
+        <Cities cities={[]} />
       </MockedProvider>
     )
 
@@ -47,7 +47,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'o'}
-          isLoading={false}
         />
       </MockedProvider>
     )
@@ -61,6 +60,46 @@ describe('<Home /> component', () => {
     const russia = screen.getByText('Russia')
     expect(moscow).toBeInTheDocument()
     expect(russia).toBeInTheDocument()
+  })
+
+  it('When cities and isReadOnly, cities table is rendered with expected cities and no edit visited/wishlist buttons', () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities
+          cities={[
+            {
+              id: 1,
+              name: 'London',
+              country: 'United Kingdom',
+              visited: false,
+              wishlist: false,
+            },
+            {
+              id: 2,
+              name: 'Moscow',
+              country: 'Russia',
+              visited: false,
+              wishlist: false,
+            },
+          ]}
+          filter={'o'}
+          isReadonly={true}
+        />
+      </MockedProvider>
+    )
+
+    const london = screen.getByText('London')
+    const uk = screen.getByText('United Kingdom')
+    expect(london).toBeInTheDocument()
+    expect(uk).toBeInTheDocument()
+
+    const moscow = screen.getByText('Moscow')
+    const russia = screen.getByText('Russia')
+    expect(moscow).toBeInTheDocument()
+    expect(russia).toBeInTheDocument()
+
+    const menuButton = screen.queryByRole('button')
+    expect(menuButton).not.toBeInTheDocument()
   })
 
   it('with cities the menu button is rendered', async () => {
@@ -77,7 +116,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
-          isLoading={false}
         />
       </MockedProvider>
     )
@@ -100,7 +138,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
-          isLoading={false}
         />
       </MockedProvider>
     )
@@ -126,7 +163,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
-          isLoading={false}
         />
       </MockedProvider>
     )
@@ -154,7 +190,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
-          isLoading={false}
         />
       </MockedProvider>
     )
@@ -187,7 +222,6 @@ describe('<Home /> component', () => {
             },
           ]}
           filter={'London'}
-          isLoading={false}
         />
       </MockedProvider>
     )

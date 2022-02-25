@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import { GetCitiesRequestSeeder, render } from './test-utils'
-import { Home } from './Home'
 import { Visited } from './Visited'
 
 describe('<Visited /> component', () => {
