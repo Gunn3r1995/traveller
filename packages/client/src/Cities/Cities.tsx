@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client'
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import {
   Button,
   Menu,
@@ -11,6 +12,7 @@ import {
   TableCaption,
   Tbody,
   Td,
+  Tfoot,
   Th,
   Thead,
   Tr,
@@ -18,11 +20,38 @@ import {
 import { FC } from 'react'
 import { CitiesMutationInput, CityResponse, UPDATE_CITY } from '../queries'
 
+export interface Paging {
+  onPreviousClicked: () => void
+  onNextClicked: () => void
+}
+
 export interface Props {
-  filter?: string
+  /**
+   * The cities to render, if null supplied then the Cities table is not rendered.
+   */
   cities: ReadonlyArray<CityResponse> | undefined
+
+  /**
+   * The filter text that was used to display return the supplied cities.
+   */
+  filter?: string
+
+  /**
+   * Whether the cities component is loading or not. If not it will render Skeletons, otherwise the provided cities.
+   * @default false
+   */
   isLoading?: boolean
+
+  /**
+   * Whether the user can update visited or wishlist for each city.
+   * @default false
+   */
   isReadonly?: boolean
+
+  /**
+   * Whether to implement paging buttons with callbacks or not.
+   */
+  pagination?: Paging | undefined
 }
 
 export const Cities: FC<Props> = (props: Props) => {
@@ -54,7 +83,7 @@ export const Cities: FC<Props> = (props: Props) => {
 
   if (isLoading) {
     return (
-      <Stack mt="5px" data-testid="cities-loading">
+      <Stack mt="10px" data-testid="cities-loading">
         <Skeleton height="20px" />
         <Skeleton height="20px" />
         <Skeleton height="20px" />
@@ -112,6 +141,31 @@ export const Cities: FC<Props> = (props: Props) => {
           </Tr>
         ))}
       </Tbody>
+      {props.pagination != undefined && (
+        <Tfoot>
+          <Tr>
+            <Th>
+              <Button
+                leftIcon={<ChevronLeftIcon />}
+                onClick={props.pagination.onPreviousClicked}
+                disabled={props.cities.length < 10}
+              >
+                Previous
+              </Button>
+            </Th>
+            <Th></Th>
+            <Th>
+              <Button
+                rightIcon={<ChevronRightIcon />}
+                onClick={props.pagination.onNextClicked}
+                disabled={props.cities.length < 10}
+              >
+                Next
+              </Button>
+            </Th>
+          </Tr>
+        </Tfoot>
+      )}
     </Table>
   )
 }

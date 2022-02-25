@@ -1,9 +1,10 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { CityResponse } from '../queries'
 import { UpdateCityRequestSeeder } from '../test-utils'
 import { Cities } from './Cities'
 
-describe('<Home /> component', () => {
+describe('<Cities /> component', () => {
   it('when no cities with filter, No cities found text with filter is rendered', async () => {
     render(
       <MockedProvider mocks={[]} addTypename={false}>
@@ -246,5 +247,118 @@ describe('<Home /> component', () => {
     )
 
     expect(screen.getByTestId('cities-loading')).toBeInTheDocument()
+  })
+
+  it('does not show paging options when paging is undefined', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities cities={[]} />
+      </MockedProvider>
+    )
+
+    expect(screen.queryByRole('button', { name: 'Previous' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Next' })).not.toBeInTheDocument()
+  })
+
+  it('shows paging options when paging is set', async () => {
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities cities={[]} pagination={{ onNextClicked: () => {}, onPreviousClicked: () => {} }} />
+      </MockedProvider>
+    )
+
+    expect(screen.getByRole('button', { name: 'Previous' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument()
+  })
+
+  it('handles next callback when next paging options is clicked', async () => {
+    const nextCallback = jest.fn()
+    const previousCallback = jest.fn()
+
+    const lnd: CityResponse = { id: 0, country: 'UK', name: 'London', visited: false, wishlist: false }
+
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities
+          cities={[lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd]} // Needs 10 or more for button to not be disabled
+          pagination={{ onNextClicked: nextCallback, onPreviousClicked: previousCallback }}
+        />
+      </MockedProvider>
+    )
+
+    const nextButton = screen.getByRole('button', { name: 'Next' })
+    fireEvent(
+      nextButton,
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    )
+
+    expect(nextCallback).toHaveBeenCalledTimes(1)
+    expect(previousCallback).not.toHaveBeenCalled()
+  })
+
+  it('handles previous callback when next paging options is clicked', async () => {
+    const nextCallback = jest.fn()
+    const previousCallback = jest.fn()
+    const lnd: CityResponse = { id: 0, country: 'UK', name: 'London', visited: false, wishlist: false }
+
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities
+          cities={[lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd]} // Needs 10 or more for button to not be disabled
+          pagination={{ onNextClicked: nextCallback, onPreviousClicked: previousCallback }}
+        />
+      </MockedProvider>
+    )
+
+    const previousButton = screen.getByRole('button', { name: 'Previous' })
+    fireEvent(
+      previousButton,
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    )
+
+    expect(nextCallback).not.toHaveBeenCalled()
+    expect(previousCallback).toHaveBeenCalledTimes(1)
+  })
+
+  it('callbacks never fire when 9 or less cities are provided', async () => {
+    const nextCallback = jest.fn()
+    const previousCallback = jest.fn()
+    const lnd: CityResponse = { id: 0, country: 'UK', name: 'London', visited: false, wishlist: false }
+
+    render(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Cities
+          cities={[lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd, lnd]} // 9 cities so the button is disabled
+          pagination={{ onNextClicked: nextCallback, onPreviousClicked: previousCallback }}
+        />
+      </MockedProvider>
+    )
+
+    const previousButton = screen.getByRole('button', { name: 'Previous' })
+    fireEvent(
+      previousButton,
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    )
+
+    const nextButton = screen.getByRole('button', { name: 'Next' })
+    fireEvent(
+      nextButton,
+      new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+      })
+    )
+
+    expect(nextCallback).not.toHaveBeenCalled()
+    expect(previousCallback).not.toHaveBeenCalled()
   })
 })
