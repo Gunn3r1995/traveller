@@ -30,11 +30,13 @@ export interface CitiesData {
 
 export interface CitiesVars {
   filter?: CitiesFilters
+  limit?: number
+  offset?: number
 }
 
 export const CITIES = gql`
-  query GetCities($filter: CitiesFilters) {
-    cities(filter: $filter) {
+  query GetCities($filter: CitiesFilters, $limit: Int, $offset: Int) {
+    cities(filter: $filter, limit: $limit, offset: $offset) {
         cities {
           id
           name

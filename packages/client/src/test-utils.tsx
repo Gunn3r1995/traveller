@@ -42,13 +42,15 @@ export class GetCitiesRequestSeeder implements MockedResponse<Record<string, any
     return this
   }
 
-  public RespondsWithCities(filter?: string, cities?: CityResponse[]): GetCitiesRequestSeeder {
+  public RespondsWithCities(filter?: string, cities?: CityResponse[], offset?: number): GetCitiesRequestSeeder {
     this.request = {
       ...this.request,
       variables: {
         filter: {
           name: filter,
         },
+        limit: 10,
+        offset: offset == undefined ? 0 : offset,
       },
     }
 
