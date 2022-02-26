@@ -34,6 +34,8 @@ export interface CitiesVars {
   offset?: number
 }
 
+export const CITIES_LIMIT = 10;
+
 export const CITIES = gql`
   query GetCities($filter: CitiesFilters, $limit: Int, $offset: Int) {
     cities(filter: $filter, limit: $limit, offset: $offset) {

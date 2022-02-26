@@ -2,7 +2,7 @@ import { FC, useState } from 'react'
 import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, VStack } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
 import { Cities } from './Cities/Cities'
-import { CITIES, CitiesData, CitiesVars } from './queries'
+import { CITIES, CitiesData, CitiesVars, CITIES_LIMIT } from './queries'
 import { useLazyQuery } from '@apollo/client'
 
 export const Home: FC = () => {
@@ -18,7 +18,7 @@ export const Home: FC = () => {
         filter: {
           name: filter,
         },
-        limit: 10,
+        limit: CITIES_LIMIT,
         offset: 0,
       },
     })
@@ -28,25 +28,25 @@ export const Home: FC = () => {
       return
     }
 
-    const newOffset = offset - 10
+    const newOffset = offset - CITIES_LIMIT
     setOffset(newOffset)
     refetch({
       filter: {
         name: filter,
       },
-      limit: 10,
+      limit: CITIES_LIMIT,
       offset: newOffset,
     })
   }
 
   const handleNext = () => {
-    const newOffset = offset + 10
+    const newOffset = offset + CITIES_LIMIT
     setOffset(newOffset)
     refetch({
       filter: {
         name: filter,
       },
-      limit: 10,
+      limit: CITIES_LIMIT,
       offset: newOffset,
     })
   }

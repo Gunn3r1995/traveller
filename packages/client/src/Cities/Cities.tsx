@@ -18,7 +18,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import { FC } from 'react'
-import { CitiesMutationInput, CityResponse, UPDATE_CITY } from '../queries'
+import { CitiesMutationInput, CITIES_LIMIT, CityResponse, UPDATE_CITY } from '../queries'
 
 export interface Paging {
   onPreviousClicked: () => void
@@ -148,7 +148,7 @@ export const Cities: FC<Props> = (props: Props) => {
               <Button
                 leftIcon={<ChevronLeftIcon />}
                 onClick={props.pagination.onPreviousClicked}
-                disabled={props.cities.length < 10}
+                disabled={props.cities.length < CITIES_LIMIT}
               >
                 Previous
               </Button>
@@ -158,7 +158,7 @@ export const Cities: FC<Props> = (props: Props) => {
               <Button
                 rightIcon={<ChevronRightIcon />}
                 onClick={props.pagination.onNextClicked}
-                disabled={props.cities.length < 10}
+                disabled={props.cities.length < CITIES_LIMIT}
               >
                 Next
               </Button>
