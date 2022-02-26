@@ -17,8 +17,9 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import { FC } from 'react'
-import { CitiesMutationInput, CITIES_LIMIT, CityResponse, UPDATE_CITY } from '../queries'
+import type { FC } from 'react'
+import type { CitiesMutationInput, CityResponse } from './queries'
+import { CITIES_LIMIT, UPDATE_CITY } from './queries'
 
 export interface Paging {
   onPreviousClicked: () => void

@@ -1,16 +1,19 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
+import type { FC } from 'react'
 import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, VStack } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
 import { Cities } from './Cities'
-import { CITIES, CitiesData, CitiesVars, CITIES_LIMIT } from './queries'
+import type { CitiesData, CitiesVars } from './queries'
+import { CITIES, CITIES_LIMIT } from './queries'
 import { useLazyQuery } from '@apollo/client'
+import type { ChangeEvent } from 'react'
 
 export const Home: FC = () => {
-  const [offset, setOffset] = useState(0)
+  const [offset, setOffset] = useState<number>(0)
   const [getCities, { loading, error, data, refetch }] = useLazyQuery<CitiesData, CitiesVars>(CITIES)
 
   const [filter, setFilter] = useState<string>()
-  const handleChange = (event: any) => setFilter(event.target.value)
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => setFilter(event.target.value)
 
   const handleSearch = () =>
     getCities({
