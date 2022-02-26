@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, VStack } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
-import { Cities } from './Cities/Cities'
+import { Cities } from './Cities'
 import { CITIES, CitiesData, CitiesVars, CITIES_LIMIT } from './queries'
 import { useLazyQuery } from '@apollo/client'
 
@@ -25,7 +25,7 @@ export const Home: FC = () => {
 
   const handlePrevious = () => {
     if (offset === 0) {
-      return
+      return // We have reached the first page. No more paging required
     }
 
     const newOffset = offset - CITIES_LIMIT

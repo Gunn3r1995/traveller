@@ -1,13 +1,13 @@
 import React from 'react'
 import type { FC } from 'react'
 import { Container, Heading } from '@chakra-ui/react'
-import { Cities } from './Cities/Cities'
+import { Cities } from './Cities'
 import { useQuery } from '@apollo/client'
 import { CITIES, CitiesData, CitiesVars } from './queries'
 
 export const WishList: FC = () => {
   const { loading, error, data, refetch } = useQuery<CitiesData, CitiesVars>(CITIES, {
-    fetchPolicy: 'network-only', // Stops catch-first policy to ensure we always get the users latest visited cities
+    fetchPolicy: 'network-only', // Stops catch-first policy to ensure we always get the users latest wishlist cities
     variables: {
       filter: {
         wishlist: true,

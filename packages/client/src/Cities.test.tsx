@@ -1,7 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { CityResponse } from '../queries'
-import { UpdateCityRequestSeeder } from '../test-utils'
+import { CityResponse } from './queries'
+import { UpdateCityRequestSeeder } from './test-utils'
 import { Cities } from './Cities'
 
 describe('<Cities /> component', () => {
