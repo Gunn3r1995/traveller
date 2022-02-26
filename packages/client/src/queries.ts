@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export interface CitiesFilters {
   name?: string
@@ -8,24 +8,24 @@ export interface CitiesFilters {
 
 export interface CitiesMutationInput {
   input: {
-    id: number,
-    wishlist?: boolean,
+    id: number
+    wishlist?: boolean
     visited?: boolean
   }
 }
 
 export interface CityResponse {
-  id: number,
-  name: string,
-  country: string,
-  visited: boolean,
+  id: number
+  name: string
+  country: string
+  visited: boolean
   wishlist: boolean
 }
 
 export interface CitiesData {
-    cities: {
-        cities: CityResponse[]
-    }
+  cities: {
+    cities: CityResponse[]
+  }
 }
 
 export interface CitiesVars {
@@ -34,28 +34,30 @@ export interface CitiesVars {
   offset?: number
 }
 
+export const CITIES_LIMIT = 10
+
 export const CITIES = gql`
   query GetCities($filter: CitiesFilters, $limit: Int, $offset: Int) {
     cities(filter: $filter, limit: $limit, offset: $offset) {
-        cities {
-          id
-          name
-          country
-          visited
-          wishlist
-        }
+      cities {
+        id
+        name
+        country
+        visited
+        wishlist
       }
+    }
   }
 `
 
 export const UPDATE_CITY = gql`
-mutation UpdateCity($input: CitiesMutationInput) {
-  updateCity(input: $input) {
+  mutation UpdateCity($input: CitiesMutationInput) {
+    updateCity(input: $input) {
       id
       name
       country
       visited
       wishlist
+    }
   }
-}
 `

@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { ChakraProvider, theme } from '@chakra-ui/react'
 import { MockedResponse } from '@apollo/client/testing'
 import { GraphQLRequest, FetchResult } from '@apollo/client'
-import { CITIES, CityResponse, UPDATE_CITY } from './queries'
+import { CITIES, CITIES_LIMIT, CityResponse, UPDATE_CITY } from './queries'
 import { GraphQLError } from 'graphql'
 
 const AllProviders = ({ children }: { children?: React.ReactNode }) => (
@@ -49,7 +49,7 @@ export class GetCitiesRequestSeeder implements MockedResponse<Record<string, any
         filter: {
           name: filter,
         },
-        limit: 10,
+        limit: CITIES_LIMIT,
         offset: offset == undefined ? 0 : offset,
       },
     }

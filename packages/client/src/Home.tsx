@@ -1,16 +1,19 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
+import type { FC } from 'react'
 import { Container, InputRightElement, Input, Heading, InputGroup, IconButton, VStack } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
-import { Cities } from './Cities/Cities'
-import { CITIES, CitiesData, CitiesVars } from './queries'
+import { Cities } from './Cities'
+import type { CitiesData, CitiesVars } from './queries'
+import { CITIES, CITIES_LIMIT } from './queries'
 import { useLazyQuery } from '@apollo/client'
+import type { ChangeEvent } from 'react'
 
 export const Home: FC = () => {
-  const [offset, setOffset] = useState(0)
+  const [offset, setOffset] = useState<number>(0)
   const [getCities, { loading, error, data, refetch }] = useLazyQuery<CitiesData, CitiesVars>(CITIES)
 
   const [filter, setFilter] = useState<string>()
-  const handleChange = (event: any) => setFilter(event.target.value)
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => setFilter(event.target.value)
 
   const handleSearch = () =>
     getCities({
@@ -18,35 +21,35 @@ export const Home: FC = () => {
         filter: {
           name: filter,
         },
-        limit: 10,
+        limit: CITIES_LIMIT,
         offset: 0,
       },
     })
 
   const handlePrevious = () => {
     if (offset === 0) {
-      return
+      return // We have reached the first page. No more paging required
     }
 
-    const newOffset = offset - 10
+    const newOffset = offset - CITIES_LIMIT
     setOffset(newOffset)
     refetch({
       filter: {
         name: filter,
       },
-      limit: 10,
+      limit: CITIES_LIMIT,
       offset: newOffset,
     })
   }
 
   const handleNext = () => {
-    const newOffset = offset + 10
+    const newOffset = offset + CITIES_LIMIT
     setOffset(newOffset)
     refetch({
       filter: {
         name: filter,
       },
-      limit: 10,
+      limit: CITIES_LIMIT,
       offset: newOffset,
     })
   }

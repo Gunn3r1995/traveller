@@ -3,7 +3,6 @@ import { screen } from '@testing-library/react'
 import { render } from './test-utils'
 import { App } from './App'
 import { MockedProvider } from '@apollo/client/testing'
-import { CITIES } from './queries'
 
 describe('<App /> component', () => {
   it('renders the Header content', async () => {

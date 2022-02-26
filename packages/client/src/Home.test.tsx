@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 import { GetCitiesRequestSeeder, render } from './test-utils'
 import { Home } from './Home'
-import { CityResponse } from './queries'
+import { CITIES_LIMIT, CityResponse } from './queries'
 
 describe('<Home /> component', () => {
   it('renders the search box input', async () => {
@@ -182,7 +182,7 @@ describe('<Home /> component', () => {
     const citiesMockOffset10 = new GetCitiesRequestSeeder().RespondsWithCities(
       undefined,
       [mos, mos, mos, mos, mos, mos, mos, mos, mos, mos],
-      10
+      CITIES_LIMIT
     )
     const citiesMockOffsetPrev0 = new GetCitiesRequestSeeder().RespondsWithCities(
       undefined,
@@ -209,7 +209,7 @@ describe('<Home /> component', () => {
     await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
 
     expect(screen.getByTestId('cities')).toBeInTheDocument()
-    expect(screen.getAllByText('London')).toHaveLength(10)
+    expect(screen.getAllByText('London')).toHaveLength(CITIES_LIMIT)
 
     // Next Button Clicked Once
 
@@ -224,7 +224,7 @@ describe('<Home /> component', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
     expect(screen.getByTestId('cities')).toBeInTheDocument()
-    expect(screen.getAllByText('Moscow')).toHaveLength(10)
+    expect(screen.getAllByText('Moscow')).toHaveLength(CITIES_LIMIT)
 
     // Previous Button Clicked Once
 
@@ -239,7 +239,7 @@ describe('<Home /> component', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
     expect(screen.getByTestId('cities')).toBeInTheDocument()
-    expect(screen.getAllByText('Saint Petersburg')).toHaveLength(10)
+    expect(screen.getAllByText('Saint Petersburg')).toHaveLength(CITIES_LIMIT)
 
     // Clicking Previous Button again does nothing
     fireEvent(
@@ -252,6 +252,6 @@ describe('<Home /> component', () => {
 
     await new Promise(resolve => setTimeout(resolve, 0)) // wait for response
     expect(screen.getByTestId('cities')).toBeInTheDocument()
-    expect(screen.getAllByText('Saint Petersburg')).toHaveLength(10)
+    expect(screen.getAllByText('Saint Petersburg')).toHaveLength(CITIES_LIMIT)
   })
 })

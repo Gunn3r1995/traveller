@@ -1,4 +1,3 @@
-import React from 'react'
 import type { FC } from 'react'
 import { ChakraProvider, Box, extendTheme } from '@chakra-ui/react'
 import { Route, Routes } from 'react-router-dom'
